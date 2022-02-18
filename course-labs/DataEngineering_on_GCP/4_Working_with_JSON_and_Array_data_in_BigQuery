@@ -93,3 +93,36 @@ LIMIT 10
 
 #standardSQL
 SELECT STRUCT("Rudisha" as name, 23.4 as split) as runner
+
+
+# Lab Question: STRUCT()
+#standardSQL
+SELECT COUNT(participants.name) AS racer_count
+FROM racing.race_results AS r, r.participants
+
+# OR
+#standardSQL
+SELECT COUNT(p.name) AS racer_count
+FROM racing.race_results AS r, UNNEST(r.participants) AS p
+
+# Lab Question: Unpacking ARRAYs with UNNEST( )
+#standardSQL
+SELECT
+  p.name,
+  SUM(split_times) as total_race_time
+FROM racing.race_results AS r
+, r.participants AS p
+, p.splits AS split_times
+WHERE p.name LIKE 'R%'
+GROUP BY p.name
+ORDER BY total_race_time ASC
+;
+
+# Lab Question: Filtering within ARRAY values
+SELECT
+  p.name,
+  split_time
+FROM racing.race_results AS r
+, UNNEST(r.participants) AS p
+, UNNEST(p.splits) AS split_time
+WHERE split_time = 23.2;

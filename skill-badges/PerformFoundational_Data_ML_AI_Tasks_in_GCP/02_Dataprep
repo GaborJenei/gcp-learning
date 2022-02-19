@@ -1,0 +1,48 @@
+# Dataprep: Qwik Start
+
+# Create a Cloud Storage bucket in your project
+Navigation menu > Cloud Storage > Browser.
+Create bucket.
+Name the bucket a unique name
+Create
+
+gsutil mb gs://BUCKET_NAME
+gsutil mb -p PROJECT_ID -c STORAGE_CLASS -l BUCKET_LOCATION -b on gs://BUCKET_NAME
+
+defaults: US multi-region, class of Standard Storage.
+
+# Initialize Cloud Dataprep
+Navigation menu > Dataprep.
+accept the Google Dataprep Terms of Service
+Check to authorize sharing your account information with Trifacta, then click Agree and Continue.
+Click Allow to allow Trifacta to access project data.
+Click your student username to sign in to Cloud Dataprep by Trifacta. Your username is the Username in the left panel in your lab.
+...
+
+# Create a flow
+Cloud Dataprep uses a flow workspace to access and manipulate datasets.
+Click Flows icon, then the Create button, then select Blank Flow
+Untitled Flow, name the flow "FEC-2016", and then describe the flow as "United States Federal Elections Commission 2016".
+
+# Import datasets
+Click Add Datasets, then select the Import Datasets link.
+In the left menu pane, select Cloud Storage to import datasets from Cloud Storage, then click on the pencil to edit the file path.
+Type gs://spls/gsp105 in the Choose a file or folder text box, then click Go.
+Click us-fec/.
+Click the + icon next to cn-2016.txt to create a dataset shown in the right pane. Click on the title in the dataset in the right pane and rename it "Candidate Master 2016".
+In the same way add the itcont-2016.txt dataset, and rename it "Campaign Contributions 2016".
+Both datasets are listed in the right pane; click Import & Add to Flow.
+
+# Prep the candidate file
+
+
+
+# Wrangle the Contributions file and join it in
+
+
+
+# Summary of data
+
+
+
+# Rename columns

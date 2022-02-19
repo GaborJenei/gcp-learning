@@ -1,0 +1,69 @@
+# Perform Foundational Data, ML, and AI Tasks in Google Cloud: Challenge Lab
+
+# Create a BigQuery dataset called BigQuery Dataset Name .
+# Create a Cloud Storage Bucket called Cloud Storage Bucket Name
+
+export BQ_DATASET=lab_131
+export BUCKET=d29b3aad-2337-4ff1-8cfc-94dd0faf0940
+export REGION=us-east4
+
+
+bq mk $BQ_DATASET
+gsutil mb gs://$BUCKET
+
+
+# Task 2: Run a simple Dataproc job
+
+# set default region
+gcloud config set dataproc/region $REGION
+
+# Create cluster
+gcloud dataproc clusters create gabs-cluster --worker-boot-disk-size 500
+
+# SSH into a machine
+hdfs dfs -cp gs://cloud-training/gsp323/data.txt /data.txt
+
+# Send job
+gcloud dataproc jobs submit spark --cluster gabs-cluster \
+  --class org.apache.spark.examples.SparkPageRank \
+  --jars file:///usr/lib/spark/examples/jars/spark-examples.jar -- /data.txt
+
+
+#
+# Task 3: Run a simple Dataprep job
+#
+
+gs://cloud-training/gsp323/runs.csv
+
+#
+# Remove all rows with the state of "FAILURE"
+# Remove all rows with 0 or 0.0 as a score (Use the regex pattern /(^0$|^0\.0$)/)
+# Label columns with the names above
+
+
+rename type: manual mapping: [column24,'Candidate_Name'], [column2,'Candidate_ID'],[column8,'Party_Affiliation'], [sum_column16,'Total_Contribution_Sum'], [average_column16,'Average_Contribution_Sum'], [countif,'Number_of_Contributions']
+
+rename type: manual mapping: [column2, 'runid'],	[column3, 'userid']	[column4, 'labid'], [column5,'lab_title']	[column6,'start']	[column7,'end'] [column8,	'time'],	[column9, score],	[column10, state]
+
+
+#
+# Task 4: AI
+#
+
+# NLP
+export DEST_NLP=gs://qwiklabs-gcp-04-e5ebbd4f1650-marking/task4-cnl-421.result
+export GOOGLE_CLOUD_PROJECT=$(gcloud config get-value core/project)
+
+
+gcloud iam service-accounts create my-natlang-sa \
+  --display-name "my natural language service account"
+
+gcloud iam service-accounts keys create ~/key.json \
+    --iam-account my-natlang-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com
+
+export GOOGLE_APPLICATION_CREDENTIALS="/home/student_04_cea2d9ffcfab/key.json"
+
+gcloud ml language analyze-entities --content="Old Norse texts portray Odin as one-eyed and long-bearded, frequently wielding a spear named Gungnir and wearing a cloak and a broad hat." > result.json
+
+# upload
+gsutil cp ./result.json $DEST_NLP

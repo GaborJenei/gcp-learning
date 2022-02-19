@@ -1,0 +1,59 @@
+# AI Platform: Qwik Start
+
+This lab gives you an introductory, end-to-end experience of training and prediction on AI Platform. The lab will use a census dataset to:
+
+Create a TensorFlow 2.x training application and validate it locally.
+Run your training job on a single worker instance in the cloud.
+Deploy a model to support prediction.
+Request an online prediction and see the response.
+
+# Create a notebook using the UI
+
+# Clone git respo
+git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+
+# TODO copy over deployment details (not model details)
+
+
+
+
+# Step 1: Get your training data
+mkdir data
+gsutil -m cp gs://cloud-samples-data/ml-engine/census/data/* data/
+
+export TRAIN_DATA=$(pwd)/data/adult.data.csv
+export EVAL_DATA=$(pwd)/data/adult.test.csv
+
+head data/adult.data.csv
+
+# Step 2: Run a local training job
+mkdir -p trainer
+touch trainer/__init__.py
+
+
+# - Python program
+
+# Step 2.2: Run a training job locally using the Python training program
+# set a MODEL_DIR variable to hold the trained model,
+
+MODEL_DIR=output
+gcloud ai-platform local train \
+    --module-name trainer.task \
+    --package-path trainer/ \
+    --job-dir $MODEL_DIR \
+    -- \
+    --train-files $TRAIN_DATA \
+    --eval-files $EVAL_DATA \
+    --train-steps 1000 \
+    --eval-steps 100
+
+Check if the output has been written to the output folder
+ls output/keras_export/
+
+# Step 2.3: Prepare input for prediction
+
+
+# Step 2.4: Use your trained model for prediction
+
+
+# Step 3: Run your training job in the cloud
